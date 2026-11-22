@@ -1,0 +1,23 @@
+name: Build AutoCompilateur.exe
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installer les outils
+        run: pip install pyinstaller tkinterdnd2
+      - name: Créer le .exe
+        run: pyinstaller --onefile --windowed --name AutoCompilateur --collect-all tkinterdnd2 app.py
+      - name: Récupérer le .exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoCompilateur-exe
+          path: dist/AutoCompilateur.exe
